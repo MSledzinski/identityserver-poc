@@ -5,12 +5,7 @@
     public class CustomGroupService : GroupService<CustomGroup>
     {
         public CustomGroupService(CustomGroupRepository groupRepository)
-            : base(groupRepository)
-        {
-        }
-
-        public CustomGroupService(string defaultTenant, CustomGroupRepository groupRepository)
-            : base(defaultTenant, groupRepository)
+            : base("Tenant", groupRepository)
         {
         }
     }
