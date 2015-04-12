@@ -26,6 +26,13 @@
                                    Type = ScopeType.Resource,
                                    Enabled = true,
                                    Description = "Enables OAuth to web api back"
+                               },
+                           new Scope
+                               {
+                                   Enabled = true,
+                                   Name = "identityApi",
+                                   Description = "Resource for identity mgmgt",
+                                   Type = ScopeType.Resource
                                }
                        };
 

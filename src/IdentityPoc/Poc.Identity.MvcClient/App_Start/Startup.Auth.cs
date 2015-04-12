@@ -34,7 +34,7 @@
                 new OpenIdConnectAuthenticationOptions()
                     {
                         ClientId = "implicitclient",
-                        Authority = "https://localhost:44333",
+                        Authority = "https://localhost:44333/identity",
                         RedirectUri = "http://localhost:2671/",
                         // id - OIDC token, token - for oauth to webapi
                         ResponseType = "id_token token",

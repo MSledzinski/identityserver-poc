@@ -17,7 +17,7 @@ namespace Poc.Identity.WebApiBack
                 new IdentityServerBearerTokenAuthenticationOptions()
                     {
                         
-                        Authority = "https://localhost:44333",
+                        Authority = "https://localhost:44333/identity",
                         RequiredScopes = new[] { "webApiBack" }
                     });
 

@@ -32,6 +32,19 @@
                                                                 },
                                    RequireConsent = false
                                },
+                               new Client
+                                   {
+                                       ClientName = "Web Mgmt UI",
+                                       Enabled = true,
+                                       ClientId = "identityWebUi",
+                                       ClientSecrets = new List<ClientSecret>()
+                                                           {
+                                                               new ClientSecret("super_secret")
+                                                           },
+                                        Flow = Flows.ResourceOwner,
+                                        AccessTokenType = AccessTokenType.Jwt,
+                                        AccessTokenLifetime = 3600
+                                   }
 
                        };
         }

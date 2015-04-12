@@ -6,42 +6,62 @@ using Poc.Identity.WebHost;
 
 namespace Poc.Identity.WebHost
 {
-    using System.Collections.Generic;
-
     using Owin;
 
+    using Poc.Identity.WebHost.Configuration;
     using Poc.Identity.WebHost.Configuration.Certificates;
-    using Poc.Identity.WebHost.Configuration.Clients;
-    using Poc.Identity.WebHost.Configuration.Scopes;
-    using Poc.Identity.WebHost.Configuration.Users;
+    using Poc.Identity.WebHost.IdentityManagement;
 
-    using Thinktecture.IdentityServer.Core;
+    using Thinktecture.IdentityManager.Configuration;
     using Thinktecture.IdentityServer.Core.Configuration;
     using Thinktecture.IdentityServer.Core.Logging;
 
     public class Startup
     {
+        private const string MemebersConnName = "MemebershipConnString";
+
         public void Configuration(IAppBuilder app)
         {
             LogProvider.SetCurrentLogProvider(new DiagnosticsTraceLogProvider());
 
+            AttachIdentityManager(app);
             AttachIdentityServer(app);
         }
 
         private void AttachIdentityServer(IAppBuilder app)
         {
-            var factory = InMemoryFactory.Create(
-                users: UsersRepository.GetAll(),
-                clients: ClientsRepository.GetAll(),
-                scopes: ScopesRepository.GetAll());
+            app.Map(
+                "/identity",
+                idapp =>
+                    {
+                        var factory = CustomIdentityServerFactoryFactory.Create();
+                        CustomIdentityServerFactoryFactory.ReConfigureForCustomUsers(factory, MemebersConnName);
 
-            var options = new IdentityServerOptions()
-                              {
-                                  SigningCertificate = CertificateFinder.GetDefault(),
-                                  Factory = factory
-                              };
+                        var options = new IdentityServerOptions()
+                                          {
+                                              SigningCertificate = CertificateFinder.GetDefault(),
+                                              Factory = factory,
+                                              SiteName = "PoC Identity",
+                                              IssuerUri = "https://localhost:44333/identity",
+                                              CorsPolicy = CorsPolicy.AllowAll
+                                          };
 
-            app.UseIdentityServer(options);
+                        idapp.UseIdentityServer(options);
+                    });
+        }
+
+        private void AttachIdentityManager(IAppBuilder app)
+        {
+            app.Map(
+                "/admin",
+                idapp =>
+                    {
+                        var factory = new IdentityManagerServiceFactory();
+                        CustomIdentityManagerService.ReConfigureDefaultFactory(factory, MemebersConnName);
+
+                        idapp.UseIdentityManager(
+                            new IdentityManagerOptions() { Factory = factory });
+                    });
         }
     }
 }
