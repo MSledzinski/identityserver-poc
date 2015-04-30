@@ -21,7 +21,7 @@ namespace Poc.Identity.MvcClient.Controllers
         public ActionResult Logout()
         {
             Request.GetOwinContext().Authentication.SignOut();
-            return Redirect("/");
+            return RedirectToAction("Index", "Home");
         }
     }
 }
