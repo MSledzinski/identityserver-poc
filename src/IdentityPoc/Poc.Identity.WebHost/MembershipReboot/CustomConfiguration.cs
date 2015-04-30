@@ -22,7 +22,8 @@
                 new CustomConfiguration
                     {
                         PasswordHashingIterationCount = 5000,
-                        RequireAccountVerification = false
+                        RequireAccountVerification = false,
+                        MultiTenant = true
                     });
 
     }

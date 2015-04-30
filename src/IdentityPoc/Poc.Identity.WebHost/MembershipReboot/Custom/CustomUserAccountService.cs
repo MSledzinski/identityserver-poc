@@ -13,14 +13,28 @@
         {
         }
 
-        protected override bool VerifyPassword(CustomUser account, string password)
+        
+        public override bool Authenticate(string tenant, string username, string password, out CustomUser account)
         {
-            if (password.Equals("password", StringComparison.InvariantCultureIgnoreCase))
+            // tenant - first
+            return base.Authenticate(tenant, username, password, out account);
+        }
+
+        public override CustomUser CreateAccount(string tenant, string username, string password, string email, Guid? id = null,
+            DateTime? dateCreated = null, CustomUser account = null)
+        {
+            if (string.IsNullOrEmpty(tenant))
             {
-                return false;
+                tenant = "Tenant1";
             }
 
-            return base.VerifyPassword(account, password);
+            return base.CreateAccount(tenant, username, password, email, id, dateCreated, account);
+        }
+
+        protected override bool Authenticate(CustomUser account, string password)
+        {
+            // tenant - second
+            return base.Authenticate(account, password);
         }
     }
 }

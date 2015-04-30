@@ -43,7 +43,7 @@ namespace Poc.Identity.WebHost
                                               Factory = factory,
                                               SiteName = "PoC Identity",
                                               IssuerUri = "https://localhost:44333/identity",
-                                              CorsPolicy = CorsPolicy.AllowAll
+                                              CorsPolicy = CorsPolicy.AllowAll,
                                           };
 
                         idapp.UseIdentityServer(options);

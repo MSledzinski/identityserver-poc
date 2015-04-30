@@ -1,4 +1,6 @@
-﻿namespace Poc.Identity.WebHost.Configuration
+﻿using Poc.Identity.WebHost.Views.Custom;
+
+namespace Poc.Identity.WebHost.Configuration
 {
     using System.Collections.Generic;
 
@@ -25,6 +27,7 @@
             var usersStore = new InMemoryUserService(new List<InMemoryUser>());
             factory.UserService = new Registration<IUserService>(resolver => usersStore);
 
+            factory.ViewService = new Registration<IViewService>(resolver => new CustomViewService(resolver.Resolve<IClientStore>()));
             return factory;
         }
 

@@ -41,7 +41,7 @@
                         // openid - auth token, email - claim, roles -all claim fo role assignement
                         Scope = "openid email roles webApiBack",
                         SignInAsAuthenticationType = "Cookies",
-
+                       
                         Notifications = new OpenIdConnectAuthenticationNotifications()
                                             {
                                                 // to store only needed claims in cookie
@@ -59,6 +59,13 @@
         private void RedirectToIdentityProvider(
             RedirectToIdentityProviderNotification<OpenIdConnectMessage, OpenIdConnectAuthenticationOptions> notification)
         {
+            if (notification.ProtocolMessage.RequestType == OpenIdConnectRequestType.AuthenticationRequest)
+            {
+                notification.ProtocolMessage.AcrValues = "tenant:" +
+                                                         Tenant.HomeRealmDiscoveryService.DiscoverTenantOfUrlRealm(
+                                                             notification.OwinContext.Request.Uri.Port.ToString());
+            }
+
             if (notification.ProtocolMessage.RequestType
                 != OpenIdConnectRequestType.LogoutRequest)
             {
