@@ -23,6 +23,7 @@
                     {
                         PasswordHashingIterationCount = 5000,
                         RequireAccountVerification = false,
+                        // yeah!
                         MultiTenant = true
                     });
 

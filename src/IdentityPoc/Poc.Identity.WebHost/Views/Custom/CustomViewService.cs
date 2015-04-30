@@ -53,7 +53,13 @@ namespace Poc.Identity.WebHost.Views.Custom
 
         protected virtual Task<System.IO.Stream> Render(CommonViewModel model, string page, string tenantName = null)
         {
-            var json = Newtonsoft.Json.JsonConvert.SerializeObject(model, Newtonsoft.Json.Formatting.None, new Newtonsoft.Json.JsonSerializerSettings() { ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver() });
+            var json = Newtonsoft.Json.JsonConvert.SerializeObject(
+                model, 
+                Newtonsoft.Json.Formatting.None,
+                new Newtonsoft.Json.JsonSerializerSettings()
+                {
+                    ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver()
+                });
 
             string html = LoadHtml(page);
             html = Replace(html, new
@@ -71,6 +77,9 @@ namespace Poc.Identity.WebHost.Views.Custom
             // primitive - but works for POC
             var file = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"content\app");
             file = Path.Combine(file, name + ".html");
+
+            // we can also load CSS for a given tenant for external CDN
+            // for example doing a request to: cdn.url:4444/tenant_name/css/common_tenant_styles.css
             return File.ReadAllText(file);
         }
 
