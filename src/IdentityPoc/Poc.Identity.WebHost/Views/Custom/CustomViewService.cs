@@ -66,7 +66,7 @@ namespace Poc.Identity.WebHost.Views.Custom
             {
                 siteName = Microsoft.Security.Application.Encoder.HtmlEncode(model.SiteName),
                 model = Microsoft.Security.Application.Encoder.HtmlEncode(json),
-                tenant_name = tenantName
+                tenant_name = tenantName ?? "unknown"
             });
 
             return Task.FromResult(StringToStream(html));
@@ -120,17 +120,12 @@ namespace Poc.Identity.WebHost.Views.Custom
 
         private Stream StringToStream(string s)
         {
-            using (var ms = new MemoryStream())
-            {
-                using (var sw = new StreamWriter(ms))
-                {
-                    sw.Write(s);
-                    sw.Flush();
-                }
-
-                ms.Seek(0, SeekOrigin.Begin);
-                return ms;
-            }
+            var ms = new MemoryStream();
+            var sw = new StreamWriter(ms);
+            sw.Write(s);
+            sw.Flush();
+            ms.Seek(0, SeekOrigin.Begin);
+            return ms;
         }
     }
 }

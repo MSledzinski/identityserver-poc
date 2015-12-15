@@ -37,13 +37,26 @@ namespace Poc.Identity.WebHost
                         var factory = CustomIdentityServerFactoryFactory.Create();
                         CustomIdentityServerFactoryFactory.ReConfigureForCustomUsers(factory, MemebersConnName);
 
+                        
                         var options = new IdentityServerOptions()
                                           {
                                               SigningCertificate = CertificateFinder.GetDefault(),
                                               Factory = factory,
                                               SiteName = "PoC Identity",
-                                              IssuerUri = "https://localhost:44333/identity",
+                                              IssuerUri = "http://localhost:44333/identity",
                                               CorsPolicy = CorsPolicy.AllowAll,
+                                              Endpoints = new EndpointOptions()
+                                                              {
+                                                                  EnableTokenEndpoint = true
+                                                              },
+                                              RequireSsl = false,
+                                              LoggingOptions = new LoggingOptions()
+                                                                   {
+                                                                       EnableHttpLogging = true,
+                                                                       EnableWebApiDiagnostics = true,
+                                                                       IncludeSensitiveDataInLogs = true
+                                                                   }
+                                             
                                           };
 
                         idapp.UseIdentityServer(options);

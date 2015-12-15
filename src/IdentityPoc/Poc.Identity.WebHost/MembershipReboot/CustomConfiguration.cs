@@ -24,7 +24,10 @@
                         PasswordHashingIterationCount = 5000,
                         RequireAccountVerification = false,
                         // yeah!
-                        MultiTenant = true
+                        MultiTenant = true,
+                        
+                        UsernamesUniqueAcrossTenants = false,
+                        PasswordResetFrequency = 1 //everyday
                     });
 
     }

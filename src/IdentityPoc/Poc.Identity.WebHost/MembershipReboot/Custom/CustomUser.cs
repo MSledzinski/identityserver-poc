@@ -6,6 +6,11 @@
 
     public class CustomUser : RelationalUserAccount
     {
+        public CustomUser()
+        {
+            
+        }
+
         [Display(Name = "Fancy data")]
         [Required]
         [MaxLength(16)]

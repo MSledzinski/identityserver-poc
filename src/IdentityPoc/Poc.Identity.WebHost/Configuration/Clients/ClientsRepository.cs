@@ -8,6 +8,9 @@
     {
         public static IEnumerable<Client> GetAll()
         {
+            var resourceClientSecret = new ClientSecret("secret".Sha256());
+
+            
             return new List<Client>
                        {
                            new Client
@@ -34,16 +37,21 @@
                                },
                                new Client
                                    {
+
                                        ClientName = "Web Mgmt UI",
                                        Enabled = true,
                                        ClientId = "identityWebUi",
-                                       ClientSecrets = new List<ClientSecret>()
-                                                           {
-                                                               new ClientSecret("super_secret")
-                                                           },
+                                       ClientSecrets = new List<ClientSecret>(new []
+                                                                                  {
+                                                                                      resourceClientSecret
+                                                                                  }),
                                         Flow = Flows.ResourceOwner,
+                                        AlwaysSendClientClaims = true,
                                         AccessTokenType = AccessTokenType.Jwt,
-                                        AccessTokenLifetime = 3600
+                                          IdentityTokenLifetime = 3000,
+                                        AccessTokenLifetime = 3600,
+                                        AuthorizationCodeLifetime = 300
+
                                    }
 
                        };
